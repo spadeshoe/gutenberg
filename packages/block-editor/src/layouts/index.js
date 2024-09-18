@@ -17,12 +17,3 @@ const layoutTypes = [ flow, flex, constrained, grid ];
 export function getLayoutType( name = 'default' ) {
 	return layoutTypes.find( ( layoutType ) => layoutType.name === name );
 }
-
-/**
- * Retrieves the available layout types.
- *
- * @return {Array} Layout types.
- */
-export function getLayoutTypes() {
-	return layoutTypes;
-}

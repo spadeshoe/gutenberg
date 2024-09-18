@@ -11,8 +11,6 @@ import { addFilter } from '@wordpress/hooks';
 import { getBlockSupport, hasBlockSupport } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 import {
-	Button,
-	ButtonGroup,
 	ToggleControl,
 	PanelBody,
 	privateApis as componentsPrivateApis,
@@ -25,8 +23,8 @@ import { __ } from '@wordpress/i18n';
 import { store as blockEditorStore } from '../store';
 import { InspectorControls } from '../components';
 import { useSettings } from '../components/use-settings';
-import { getLayoutType, getLayoutTypes } from '../layouts';
 import { useBlockEditingMode } from '../components/block-editing-mode';
+import { getLayoutType } from '../layouts';
 import { LAYOUT_DEFINITIONS } from '../layouts/definitions';
 import { useBlockSettings, useStyleOverride } from './utils';
 import { unlock } from '../lock-unlock';
@@ -220,8 +218,6 @@ function LayoutPanelPure( {
 		! usedLayout.type && ( contentSize || inherit );
 	const hasContentSizeOrLegacySettings = !! inherit || !! contentSize;
 
-	const onChangeType = ( newType ) =>
-		setAttributes( { layout: { type: newType } } );
 	const onChangeLayout = ( newLayout ) =>
 		setAttributes( { layout: newLayout } );
 
@@ -264,12 +260,7 @@ function LayoutPanelPure( {
 						</>
 					) }
 
-					{ ! inherit && allowSwitching && (
-						<LayoutTypeSwitcher
-							type={ blockLayoutType }
-							onChange={ onChangeType }
-						/>
-					) }
+					{ ! inherit && allowSwitching }
 
 					{ layoutType && layoutType.name !== 'default' && (
 						<layoutType.inspectorControls
@@ -312,26 +303,6 @@ export default {
 		return hasLayoutBlockSupport( name );
 	},
 };
-
-function LayoutTypeSwitcher( { type, onChange } ) {
-	return (
-		<ButtonGroup>
-			{ getLayoutTypes().map( ( { name, label } ) => {
-				return (
-					<Button
-						// TODO: Switch to `true` (40px size) if possible
-						__next40pxDefaultSize={ false }
-						key={ name }
-						isPressed={ type === name }
-						onClick={ () => onChange( name ) }
-					>
-						{ label }
-					</Button>
-				);
-			} ) }
-		</ButtonGroup>
-	);
-}
 
 /**
  * Filters registered block settings, extending attributes to include `layout`.
